@@ -1,11 +1,3 @@
-def cmp(atual, item):
-    if item == atual:
-        return '0'
-    elif item < atual:
-        return '<0'
-    else:
-        return '>0'
-
 class No:
     def __init__(self,item=None,ant=None,prox=None):
         self.item = item
@@ -25,43 +17,70 @@ class Lista:
         return self.primeiro == self.ultimo
     
     #TODO: implemente
-    def inserirOrdenado(self, item, cmp):    
+    def inserirOrdenado(self, item):    
         '''
         Insere ordenado conforme funcao de comparacao passada como parametro.
         cmp: funcao de comparacao que retorna <0, 0 ou >0 se primeiro valor
             for menor, igual ou maior que o segundo valor 
         '''
-        atual = self.item
 
         if self.vazia():
-            elemento = No()
-            elemento.item = item
-            self.ultimo.prox = elemento
-            self.ultimo = elemento
-            elemento.ant = self.primeiro
+            self.ultimo.prox = No(item, self.primeiro, None)
+            self.ultimo = self.ultimo.prox
+            self.tamanho += 1
+            return self
 
-        elif cmp(atual, item) == '0': self.item = item
+        atual = self.primeiro.prox
 
-        elif cmp(atual, item) == '<0': inserirOrdenado(self.prox, item, cmp)
+        while (atual.prox is not None) and (atual.item < item):
+            aux = atual
+            atual = aux.prox
+
+        if atual.prox is None and (atual.item < item):
+            atual.prox = No(item, atual, None)
+            self.ultimo = atual.prox
+            self.tamanho += 1
+
+        elif atual.prox is not None:
+            aux = atual.prox
+            elemento = No(item, atual, aux)
+            aux.ant = elemento
+            atual.prox = elemento
+            self.tamanho += 1
 
         else:
-            elemento = No()
-            elemento.item = item
-            anterior = self.ant
-            self.ant = elemento
-            elemento.prox = self
-            elemento.ant = anterior
-            anterior.prox = elemento
+            atual.ant = aux
+            elemento = No(item, aux, atual)
+            aux.prox = elemento
+            atual.ant = elemento
+            
+            
         
         pass
-    
+
     #TODO: implemente    
     def removerFim(self):
+        if self.vazia(): return None
+        ultimo = self.ultimo
+        aux = ultimo.ant
+        aux.prox = None
+        ultimo.ant = None
+        self.ultimo = aux
+        del ultimo
+        self.tamanho -= 1
+        
         pass
     
     #TODO: implemente        
     def __str__(self):
-        return ""
+        if self.vazia():
+            return "lista vazia"
+        atual = self.primeiro.prox
+        string = ''
+        while atual is not None:
+            string += str(atual.item) + ' '
+            atual = atual.prox
+        return string
     
     def __repr__(self):
         return str(self)
