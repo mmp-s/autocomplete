@@ -15,7 +15,8 @@ class Lista:
 
     def vazia(self):
         return self.primeiro == self.ultimo
-    
+
+
     #TODO: implemente
     def inserirOrdenado(self, item):    
         '''
@@ -41,7 +42,7 @@ class Lista:
             self.ultimo = atual.prox
             self.tamanho += 1
 
-        elif atual.prox is not None:
+        elif atual.prox is not None and atual.item < item:
             aux = atual.prox
             elemento = No(item, atual, aux)
             aux.ant = elemento
