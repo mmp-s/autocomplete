@@ -15,8 +15,16 @@ class Palavra:
 
 #TODO: implemente       
 def comparaPorPrefixo(palavra, prefixo):
-    pass
+    if palavra.termo.lower() < prefixo.lower():
+        return -1
+    elif palavra.termo.lower() == prefixo.lower():
+        return 0
+    else: return 1
 
 #TODO: implemente
 def comparaPorPeso(palavra1, palavra2):
-    pass
+    if palavra1.peso < palavra2.peso:
+        return -1
+    elif palavra1.peso == palavra2.peso:
+        return 0
+    else: return 1

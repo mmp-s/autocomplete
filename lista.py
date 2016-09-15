@@ -29,7 +29,7 @@ class Lista:
             self.ultimo.prox = No(item, self.primeiro, None)
             self.ultimo = self.ultimo.prox
             self.tamanho += 1
-            return self
+            pass
 
         atual = self.primeiro.prox
 
@@ -49,13 +49,14 @@ class Lista:
             atual.prox = elemento
             self.tamanho += 1
 
+        elif atual.item == item: atual.item = item
+
         else:
-            atual.ant = aux
+            aux = atual.ant
             elemento = No(item, aux, atual)
             aux.prox = elemento
             atual.ant = elemento
-            
-            
+            self.tamanho += 1
         
         pass
 
@@ -79,8 +80,12 @@ class Lista:
         atual = self.primeiro.prox
         string = ''
         while atual is not None:
-            string += str(atual.item) + ' '
-            atual = atual.prox
+            if atual == self.ultimo:
+                string += str(atual.item)
+                break
+            else:
+                string += str(atual.item) + ' '
+                atual = atual.prox
         return string
     
     def __repr__(self):
