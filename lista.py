@@ -72,6 +72,15 @@ class Lista:
         self.tamanho -= 1
         
         pass
+
+    def find(self, item):
+        if self.vazia(): return 'lista vazia'
+        atual = self.primeiro.prox
+        while atual is not None:
+            if atual.item == item:
+                return item
+            atual = atual.prox
+        if atual == None: return 'item nao esta na lista'
     
     #TODO: implemente        
     def __str__(self):
