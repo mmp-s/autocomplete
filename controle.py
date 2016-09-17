@@ -37,7 +37,15 @@ class Controle:
             self.__apagarTermos()
             
         #TODO: seu codigo aqui
-                
+            
+        file = open(filename)
+        linhas = file.readlines()
+        for linha in linhas[1:]:
+            n=0
+            while linha[n] == ' ':
+                n += 1
+            self.termos.append(linha[n:len(linha]-1])
+        
         self.termos.sort()
         self.dadosCarregados = True
     
