@@ -44,12 +44,33 @@ class Controle:
             n=0
             while linha[n] == ' ':
                 n += 1
-            self.termos.append(linha[n:len(linha]-1])
+            i = n
+            while linha[i] != '\t':
+                i += 1
+            termos = Palavra(linha[i+1:len(linha)-1], int(linha[n:i]))
+            self.termos.append((termos.termo, termos.peso))
+            self.numeroTermos += 1
         
         self.termos.sort()
         self.dadosCarregados = True
-    
+
+    def buscaBinaria(elemento, lista):
+        if lista == [] : return None
+        elif len(lista) == 1 and elemento == lista[0]: return elemento
+        else: return None    
+        pivo = lista[len(lista)//2]
+        if pivo == elemento: return elemento
+        elif pivo > elemento: return buscaBinaria(elemento, lista[:len(lista)//2])
+        else: return buscaBinaria(elemento, lista[len(lista)//2:])
+        
     #TODO: implemente    
     def find(self, prefixo, qtd):
-        
-        pass
+        meio = self.numeroTermos // 2
+        tamanho = len(prefixo)
+        sugestoes = list()
+        for termo in self.termos:
+            if termo[0][:tamanho].lower() == prefixo.lower():
+                sugestoes.append(termo)
+            if termo[0][:tamanho] > prefixo:
+                break
+        return sugestoes
