@@ -18,6 +18,11 @@ class Controle:
         inicio = 0
         fim = self.numeroTermos-1        
         pos = -1
+        while inicio <= fim:
+            if self.termos[inicio][:len(prefixo)].lower() == prefixo.lower():
+                pos = inicio
+                break
+            inicio += 1
         #TODO: seu codigo aqui                 
         return pos
     
@@ -26,9 +31,12 @@ class Controle:
         inicio = 0
         fim = self.numeroTermos-1        
         pos = -1
-        
+        while inicio <= fim:
+            if self.termos[inicio][:len(prefixo)].lower() > prefixo.lower():
+                pos = inicio -1
+                break
+            inicio += 1
         #TODO: seu codigo aqui
-                 
         return pos
      
     #TODO: implemente   
@@ -54,23 +62,22 @@ class Controle:
         self.termos.sort()
         self.dadosCarregados = True
 
-    def buscaBinaria(elemento, lista):
-        if lista == [] : return None
-        elif len(lista) == 1 and elemento == lista[0]: return elemento
-        else: return None    
-        pivo = lista[len(lista)//2]
-        if pivo == elemento: return elemento
-        elif pivo > elemento: return buscaBinaria(elemento, lista[:len(lista)//2])
-        else: return buscaBinaria(elemento, lista[len(lista)//2:])
-        
     #TODO: implemente    
     def find(self, prefixo, qtd):
-        meio = self.numeroTermos // 2
         tamanho = len(prefixo)
-        sugestoes = list()
+        sugestoes = Lista()
+        sugestaux = list()
         for termo in self.termos:
             if termo[0][:tamanho].lower() == prefixo.lower():
-                sugestoes.append(termo)
+                sugestaux.append((termo[1], termo[0]))
             if termo[0][:tamanho] > prefixo:
                 break
+
+        sugestaux.sort(reverse = True)
+
+        for resultado in sugestaux:
+            if qtd == 0: break
+            sugestoes.inserirOrdenado(resultado[1])
+            qtd -= 1
+        
         return sugestoes

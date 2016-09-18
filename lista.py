@@ -93,7 +93,7 @@ class Lista:
                 string += str(atual.item)
                 break
             else:
-                string += str(atual.item) + ' '
+                string += str(atual.item) + ', '
                 atual = atual.prox
         return string
     
