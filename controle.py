@@ -19,7 +19,7 @@ class Controle:
         fim = self.numeroTermos-1        
         pos = -1
         while inicio <= fim:
-            if self.termos[inicio][:len(prefixo)].lower() == prefixo.lower():
+            if self.termos[inicio].termo.lower() == prefixo.lower(): #busca binaria, compara por termo
                 pos = inicio
                 break
             inicio += 1
@@ -32,7 +32,7 @@ class Controle:
         fim = self.numeroTermos-1        
         pos = -1
         while inicio <= fim:
-            if self.termos[inicio][:len(prefixo)].lower() > prefixo.lower():
+            if self.termos[inicio].termo.lower() > prefixo.lower(): #busca binaria, compara por termo
                 pos = inicio -1
                 break
             inicio += 1
@@ -55,10 +55,10 @@ class Controle:
             i = n
             while linha[i] != '\t':
                 i += 1
-            termos = Palavra(linha[i+1:len(linha)-1], int(linha[n:i]))
-            self.termos.append((termos.termo, termos.peso))
-            self.numeroTermos += 1
-        
+            self.termos.append(Palavra(linha[i+1:len(linha)-1], int(linha[n:i])))
+        self.numeroTermos = int(linhas[0])
+
+        file.close()
         self.termos.sort()
         self.dadosCarregados = True
 
@@ -68,7 +68,7 @@ class Controle:
         sugestoes = Lista()
         sugestaux = list()
         for termo in self.termos:
-            if termo[0][:tamanho].lower() == prefixo.lower():
+            if termo[0][:tamanho].lower() == prefixo.lower(): #usar first e last index of, compara por peso
                 sugestaux.append((termo[1], termo[0]))
             if termo[0][:tamanho] > prefixo:
                 break

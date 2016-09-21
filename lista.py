@@ -85,7 +85,7 @@ class Lista:
     #TODO: implemente        
     def __str__(self):
         if self.vazia():
-            return "lista vazia"
+            return ""
         atual = self.primeiro.prox
         string = ''
         while atual is not None:

@@ -5,6 +5,8 @@ class Palavra:
     
     #TODO: implemente
     def __lt__(self,other):
+        if self.termo.lower() < other.termo.lower(): return True
+        else: return False
         pass
     
     def __str__(self):
