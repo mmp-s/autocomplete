@@ -1,11 +1,6 @@
 from palavra import *
 from lista import Lista
 
-def sortPesos(lista):
-    if lista = []: return []
-    else:
-        pivo = lista.pop()
-        return sortPesos([x for x in lista if x.peso <= pivo.peso]) + [pivo] + sortPesos([y for y in lista if y.peso > pivo.peso])
 class Controle:
     def __init__(self):
         self.numeroTermos = 0
@@ -22,16 +17,12 @@ class Controle:
         inicio = 0
         fim = self.numeroTermos-1        
         pos = -1
-        while inicio < fim:
-            meio = (inicio + fim)//2
-            if self.termos[meio].termo.lower().startswith(prefixo.lower()):
-                fim = meio
-                pos = meio
-            elif self.termos[meio].termo.lower() < prefixo.lower():
-                inicio = meio
-            elif self.termos[meio].termo.lower() > prefixo.lower():
-                fim = meio
-        #TODO: seu codigo aqui                 
+        while inicio <= fim:
+            if comparaPorPrefixo(self.termos[inicio], prefixo) == 0:
+                pos = inicio
+                break
+            inicio += 1
+                         
         return pos
     
     #TODO: implemente
@@ -39,16 +30,11 @@ class Controle:
         inicio = 0
         fim = self.numeroTermos-1        
         pos = -1
-        while inicio < fim:
-            meio = (inicio + fim)//2
-            if self.termos[meio].termo.lower().startswith(prefixo.lower()):
-                inicio = meio
-                pos = meio
-            elif self.termos[meio].termo.lower() < prefixo.lower():
-                inicio = meio
-            elif self.termos[meio].termo.lower() > prefixo.lower():
-                fim = meio
-        #TODO: seu codigo aqui
+        while inicio <= fim:
+            if comparaPorPrefixo(self.termos[inicio], prefixo) > 0:
+                pos = inicio -1
+                break
+            inicio += 1
         return pos
      
     #TODO: implemente   
@@ -76,28 +62,15 @@ class Controle:
 
     #TODO: implemente    
     def find(self, prefixo, qtd):
-        '''
-        tamanho = len(prefixo)
-        sugestoes = Lista()
-        sugestaux = list()
-        for termo in self.termos:
-            if termo[0][:tamanho].lower() == prefixo.lower(): #usar first e last index of, compara por peso
-                sugestaux.append((termo[1], termo[0]))
-            if termo[0][:tamanho] > prefixo:
-                break
-
-        sugestaux.sort(reverse = True)
-        '''
         sugestoes = Lista()
         inicio = self.__firstIndexOf(prefixo)
         fim = self.__lastIndexOf(prefixo) +1
-        sugestaux = self.termos[inicio:fim]
-        sugestaux = sortPesos(sugestaux)
-            
-
-        for resultado in sugestaux:
-            if qtd == 0: break
-            sugestoes.inserirOrdenado(resultado.termo)
-            qtd -= 1
+        for resultado in self.termos[inicio:fim]:
+            if sugestoes.size() < qtd:
+                sugestoes.inserirOrdenado(resultado, comparaPorPeso)
+            elif sugestoes.size() == qtd and comparaPorPeso(sugestoes.ultimo.item, resultado) < 0:
+                sugestoes.removerFim()
+                sugestoes.inserirOrdenado(resultado, comparaPorPeso)
+            else: continue
         
         return sugestoes

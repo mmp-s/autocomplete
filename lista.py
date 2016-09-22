@@ -18,7 +18,7 @@ class Lista:
 
 
     #TODO: implemente
-    def inserirOrdenado(self, item):    
+    def inserirOrdenado(self, item, cmp):    
         '''
         Insere ordenado conforme funcao de comparacao passada como parametro.
         cmp: funcao de comparacao que retorna <0, 0 ou >0 se primeiro valor
@@ -33,23 +33,23 @@ class Lista:
 
         atual = self.primeiro.prox
 
-        while (atual.prox is not None) and (atual.item < item):
+        while (atual.prox is not None) and cmp(atual.item, item) > 0:
             aux = atual
             atual = aux.prox
 
-        if atual.prox is None and (atual.item < item):
+        if atual.prox is None and cmp(atual.item, item) > 0:
             atual.prox = No(item, atual, None)
             self.ultimo = atual.prox
             self.tamanho += 1
 
-        elif atual.prox is not None and atual.item < item:
+        elif atual.prox is not None and cmp(atual.item, item) > 0:
             aux = atual.prox
             elemento = No(item, atual, aux)
             aux.ant = elemento
             atual.prox = elemento
             self.tamanho += 1
 
-        elif atual.item == item: atual.item = item
+        elif cmp(atual.item, item) == 0: atual.item = item
 
         else:
             aux = atual.ant
