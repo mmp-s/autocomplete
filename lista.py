@@ -90,10 +90,10 @@ class Lista:
         string = ''
         while atual is not None:
             if atual == self.ultimo:
-                string += str(atual.item)
+                string += str(atual.item.termo)
                 break
             else:
-                string += str(atual.item) + '\n'
+                string += str(atual.item.termo) + '\n'
                 atual = atual.prox
         return string
     

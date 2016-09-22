@@ -15,14 +15,20 @@ class Controle:
     #TODO: implemente
     def __firstIndexOf(self, prefixo):
         inicio = 0
-        fim = self.numeroTermos-1        
+        fim = self.numeroTermos
         pos = -1
-        while inicio <= fim:
-            if comparaPorPrefixo(self.termos[inicio], prefixo) == 0:
-                pos = inicio
-                break
-            inicio += 1
-                         
+        encontrado = False
+        while not encontrado and inicio < fim:
+            meio = (inicio + fim)// 2
+            if comparaPorPrefixo(self.termos[meio], prefixo) == 0 and comparaPorPrefixo(self.termos[meio-1], prefixo) != 0:
+                pos = meio
+                encontrado = True
+            elif comparaPorPrefixo(self.termos[meio], prefixo) == 0:
+                fim = meio
+            elif comparaPorPrefixo(self.termos[meio], prefixo) < 0:
+                inicio = meio + 1
+            elif comparaPorPrefixo(self.termos[meio], prefixo) > 0:
+                fim = meio
         return pos
     
     #TODO: implemente
@@ -30,11 +36,18 @@ class Controle:
         inicio = 0
         fim = self.numeroTermos-1        
         pos = -1
-        while inicio <= fim:
-            if comparaPorPrefixo(self.termos[inicio], prefixo) > 0:
-                pos = inicio -1
-                break
-            inicio += 1
+        encontrado = False
+        while not encontrado and inicio < fim:
+            meio = (inicio + fim)// 2
+            if comparaPorPrefixo(self.termos[meio], prefixo) == 0 and comparaPorPrefixo(self.termos[meio+1], prefixo) != 0:
+                pos = meio
+                encontrado = True
+            elif comparaPorPrefixo(self.termos[meio], prefixo) == 0:
+                inicio = meio +1
+            elif comparaPorPrefixo(self.termos[meio], prefixo) < 0:
+                inicio = meio +1
+            elif comparaPorPrefixo(self.termos[meio], prefixo) > 0:
+                fim = meio
         return pos
      
     #TODO: implemente   
