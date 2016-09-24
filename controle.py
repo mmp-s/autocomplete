@@ -34,7 +34,7 @@ class Controle:
     #TODO: implemente
     def __lastIndexOf(self, prefixo):
         inicio = 0
-        fim = self.numeroTermos-1        
+        fim = self.numeroTermos        
         pos = -1
         encontrado = False
         while not encontrado and inicio < fim:
