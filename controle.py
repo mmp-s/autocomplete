@@ -1,18 +1,70 @@
 from palavra import *
 from lista import Lista
+import sys
+from time import perf_counter
+import numpy
+from trie import *
+import datetime
+
+def trocar(v, i, j):
+    temp = v[i]
+    v[i] = v[j]
+    v[j] = temp
+
+def particao(v, esq, dir):
+    pivo = v[esq]; i = esq; j = dir+1
+    while(True):
+        i+=1
+        while v[i].peso < pivo.peso:
+            if i >= dir: break
+            i+=1
+        j-=1
+        while v[j].peso > pivo.peso:
+            if j <= esq: break
+            j-=1
+        if i >= j : break
+        trocar(v,i,j)
+    trocar(v,esq,j)
+    return j
+
+def qs (v, esq, dir):
+    if esq >= dir: return
+    p = particao(v,esq,dir)
+    qs(v,esq,p-1)
+    qs(v,p+1,dir)
+
+def quicksort(v, N):
+    qs(v, 0, N-1)
+def sortPesos(lista):
+    if lista == []: return []
+    else:
+        pivo = lista.pop()
+        return sortPesos([y for y in lista if y.peso > pivo.peso]) + [pivo] + sortPesos([x for x in lista if x.peso <= pivo.peso])
 
 class Controle:
     def __init__(self):
+        self.__start = None
+        self.__stop = None
+    def start(self):
+        self.__start = datetime.datetime.now()
+    def stop(self):
+        self.__stop = datetime.datetime.now()
+        return str(self.__stop - self.__start)
+    def find(self, prefixo, qtd): raise NotImplementedError("Selecione estrutura de dados")
+    def carregarDados(self, filename): raise NotImplementedError("Selecione estrutura de dados")
+
+class ImplementacaoLista(Controle):
+    def __init__(self):
+        Controle.__init__(self)
         self.numeroTermos = 0
         self.termos = list()
         self.dadosCarregados = True
-    
+
     def __apagarTermos(self):
         self.termos = []
         self.numeroTermos = 0
         self.dadosCarregados = False
     
-    #TODO: implemente
     def __firstIndexOf(self, prefixo):
         inicio = 0
         fim = self.numeroTermos
@@ -31,7 +83,6 @@ class Controle:
                 fim = meio
         return pos
     
-    #TODO: implemente
     def __lastIndexOf(self, prefixo):
         inicio = 0
         fim = self.numeroTermos        
@@ -49,13 +100,10 @@ class Controle:
             elif comparaPorPrefixo(self.termos[meio], prefixo) > 0:
                 fim = meio
         return pos
-     
-    #TODO: implemente   
+       
     def carregarDados(self,filename):
         if self.dadosCarregados:
             self.__apagarTermos()
-            
-        #TODO: seu codigo aqui
             
         file = open(filename)
         linhas = file.readlines()
@@ -72,8 +120,7 @@ class Controle:
         file.close()
         self.termos.sort()
         self.dadosCarregados = True
-
-    #TODO: implemente    
+    
     def find(self, prefixo, qtd):
         sugestoes = Lista()
         inicio = self.__firstIndexOf(prefixo)
@@ -87,3 +134,46 @@ class Controle:
             else: continue
         
         return sugestoes
+        
+class ImplementacaoTrie(Controle):
+    def __init__(self):
+        Controle.__init__(self)
+        self.trie = Trie()
+
+    def carregarDados(self, filename):
+        file = open(filename)
+        linhas = file.readlines()
+        for linha in linhas[1:]:
+            n=0
+            while linha[n] == ' ':
+                n += 1
+            i = n
+            while linha[i] != '\t':
+                i += 1
+            self.trie.inserir(Palavra(linha[i+1:len(linha)-1], int(linha[n:i])))
+
+        file.close()
+
+    def find(self, prefixo, qtd):
+        k=0
+        atual = self.trie.raiz
+        while k < len(prefixo):
+            if atual is None: return ''
+            if prefixo[k].lower() == atual.chave.lower():
+                atual = atual.mid
+                k += 1
+            elif prefixo[k].lower() > atual.chave.lower():
+                atual = atual.rig
+            else:
+                atual = atual.lef
+        sugestoes = getAll(self.trie, atual)
+        sugestoes = sortPesos(sugestoes)
+        string = ''
+        for x in sugestoes:  
+            if qtd == 0: break
+            if qtd == 1:
+                string =string + x.termo
+            else:
+                string =string + x.termo + '\n'
+            qtd -= 1 
+        return string

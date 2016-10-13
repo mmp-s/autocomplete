@@ -1,5 +1,5 @@
 from mainwindow import Ui_MainWindow
-from controle import Controle
+from controle import *
 
 class GUI(Ui_MainWindow):
     def __init__(self):
@@ -16,6 +16,10 @@ class GUI(Ui_MainWindow):
         self.botaoOK.setEnabled(self.inputFileText.text().strip() != "")
     
     def carregarDados(self):
+        if self.listaRadio.isChecked():
+            self.controle = ImplementacaoLista()
+        elif self.arvoreRadio.isChecked():
+            self.controle = ImplementacaoTrie()
         self.controle.carregarDados(self.inputFileText.text())
         self.palavraText.setEnabled(True)
     
@@ -23,7 +27,10 @@ class GUI(Ui_MainWindow):
         texto = self.palavraText.text()
         qtd = self.qtdPalavraText.text()
         if texto != "" and qtd != "":
+            self.controle.start()
             lista = self.controle.find(texto,int(qtd))
-            self.outputText.setText(str(lista))            
+            self.outputText.setText(str(lista))
+            tempo = self.controle.stop()
+            self.resultadoLabel.setText(tempo)
         else:
             self.outputText.clear()

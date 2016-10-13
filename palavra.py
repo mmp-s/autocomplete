@@ -2,8 +2,7 @@ class Palavra:
     def __init__(self,termo="",peso=-1):
         self.termo = termo
         self.peso = peso
-    
-    #TODO: implemente
+
     def __lt__(self,other):
         if self.termo.lower() < other.termo.lower(): return True
         else: return False
@@ -14,8 +13,7 @@ class Palavra:
     
     def __repr__(self):
         return self.__str__()
-
-#TODO: implemente       
+      
 def comparaPorPrefixo(palavra, prefixo):
     if palavra.termo.lower().startswith(prefixo.lower()): 
         return 0
@@ -24,7 +22,6 @@ def comparaPorPrefixo(palavra, prefixo):
     elif palavra.termo.lower() > prefixo.lower():
         return 1
 
-#TODO: implemente
 def comparaPorPeso(palavra1, palavra2):
     if palavra1.peso < palavra2.peso:
         return -1

@@ -17,7 +17,6 @@ class Lista:
         return self.primeiro == self.ultimo
 
 
-    #TODO: implemente
     def inserirOrdenado(self, item, cmp):    
         '''
         Insere ordenado conforme funcao de comparacao passada como parametro.
@@ -59,8 +58,7 @@ class Lista:
             self.tamanho += 1
         
         pass
-
-    #TODO: implemente    
+    
     def removerFim(self):
         if self.vazia(): return None
         ultimo = self.ultimo
@@ -81,8 +79,7 @@ class Lista:
                 return item
             atual = atual.prox
         if atual == None: return 'item nao esta na lista'
-    
-    #TODO: implemente        
+            
     def __str__(self):
         if self.vazia():
             return ""

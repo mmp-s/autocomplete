@@ -5,7 +5,7 @@
 # Created by: PyQt5 UI code generator 5.7
 #
 # WARNING! All changes made in this file will be lost!
-
+import sys
 from PyQt5 import QtCore, QtWidgets
 
 
@@ -32,18 +32,44 @@ class Ui_MainWindow(object):
         self.outputText.setGeometry(QtCore.QRect(10, 100, 371, 131))
         self.outputText.setObjectName("outputText")
         self.resultadoLabel = QtWidgets.QLabel(self.centralWidget)
-        self.resultadoLabel.setGeometry(QtCore.QRect(10, 80, 71, 16))
+        self.resultadoLabel.setGeometry(QtCore.QRect(10, 80, 129, 16))
         self.resultadoLabel.setObjectName("resultadoLabel")
         self.botaoOK = QtWidgets.QPushButton(self.centralWidget)
         self.botaoOK.setEnabled(False)
         self.botaoOK.setGeometry(QtCore.QRect(260, 0, 51, 41))
         self.botaoOK.setObjectName("botaoOK")
+
         self.qtdPalavraLabel = QtWidgets.QLabel(self.centralWidget)
         self.qtdPalavraLabel.setGeometry(QtCore.QRect(260, 50, 31, 16))
         self.qtdPalavraLabel.setObjectName("qtdPalavraLabel")
+
         self.qtdPalavraText = QtWidgets.QLineEdit(self.centralWidget)
         self.qtdPalavraText.setGeometry(QtCore.QRect(290, 50, 41, 21))
         self.qtdPalavraText.setObjectName("qtdPalavraText")
+
+        #RADIO BUTTON: Lista  ------------
+        self.listaLabel = QtWidgets.QLabel(self.centralWidget)
+        self.listaLabel.setGeometry(QtCore.QRect(260, 73, 51, 26))
+        self.listaLabel.setObjectName("listaLabel")
+
+        self.listaRadio = QtWidgets.QRadioButton(self.centralWidget)
+        #JÁ DEIXA MARCADA/CHECADO
+        self.listaRadio.toggled.connect(lambda: self.btnstate(self.listaRadio))
+        self.listaRadio.setGeometry(QtCore.QRect(295,67,51,36))
+        self.listaRadio.setObjectName("listaRadio")
+        # --------------------------------
+
+        #RADIO BUTTON: Tree  --------------
+        self.treeLabel = QtWidgets.QLabel(self.centralWidget)
+        self.treeLabel.setGeometry(QtCore.QRect(320, 73, 51, 26))
+        self.treeLabel.setObjectName("treeLabel")
+
+        self.arvoreRadio = QtWidgets.QRadioButton(self.centralWidget)
+        self.arvoreRadio.toggled.connect(lambda: self.btnstate(self.arvoreRadio))
+        self.arvoreRadio.setGeometry(QtCore.QRect(351,67,51,36))
+        self.arvoreRadio.setObjectName("arvoreRadio")
+        # --------------------------------
+
         MainWindow.setCentralWidget(self.centralWidget)
         self.menuBar = QtWidgets.QMenuBar(MainWindow)
         self.menuBar.setGeometry(QtCore.QRect(0, 0, 400, 22))
@@ -68,3 +94,27 @@ class Ui_MainWindow(object):
         self.botaoOK.setText(_translate("MainWindow", "OK"))
         self.qtdPalavraLabel.setText(_translate("MainWindow", "Qtd:"))
         self.qtdPalavraText.setText(_translate("MainWindow", "5"))
+
+        #ESCREVE OS LABELS NA TELA
+        self.listaLabel.setText(_translate("MainWindow", "Lista:"))
+        self.treeLabel.setText(_translate("MainWindow", "Trie:"))
+
+        #VERIFICA QUAL RÁDIO ESTÁ ATIVO
+        if self.listaRadio.isChecked() == True:
+            self.resultadoLabel.setText("Resultado Lista:")
+        else:
+            self.resultadoLabel.setText("Resultado Trie:")
+
+
+    def btnstate(self, b):
+
+        if b.objectName()  == "listaRadio":
+            if b.isChecked() == True:
+                self.resultadoLabel.setText("Resultado Lista:")
+                self.arvoreRadio.setChecked(False)
+
+        if b.objectName() == "arvoreRadio":
+            if b.isChecked() == True:
+                self.resultadoLabel.setText("Resultado Trie:")
+                self.listaRadio.setChecked(False)
+
