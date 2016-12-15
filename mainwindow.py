@@ -29,6 +29,7 @@ class Ui_MainWindow(object):
         self.palavraText.setGeometry(QtCore.QRect(70, 50, 181, 21))
         self.palavraText.setObjectName("palavraText")
         self.outputText = QtWidgets.QTextEdit(self.centralWidget)
+        self.outputText.setReadOnly(True)
         self.outputText.setGeometry(QtCore.QRect(10, 100, 371, 131))
         self.outputText.setObjectName("outputText")
         self.resultadoLabel = QtWidgets.QLabel(self.centralWidget)
@@ -53,7 +54,6 @@ class Ui_MainWindow(object):
         self.listaLabel.setObjectName("listaLabel")
 
         self.listaRadio = QtWidgets.QRadioButton(self.centralWidget)
-        #JÁ DEIXA MARCADA/CHECADO
         self.listaRadio.toggled.connect(lambda: self.btnstate(self.listaRadio))
         self.listaRadio.setGeometry(QtCore.QRect(295,67,51,36))
         self.listaRadio.setObjectName("listaRadio")
@@ -94,27 +94,18 @@ class Ui_MainWindow(object):
         self.botaoOK.setText(_translate("MainWindow", "OK"))
         self.qtdPalavraLabel.setText(_translate("MainWindow", "Qtd:"))
         self.qtdPalavraText.setText(_translate("MainWindow", "5"))
-
-        #ESCREVE OS LABELS NA TELA
         self.listaLabel.setText(_translate("MainWindow", "Lista:"))
         self.treeLabel.setText(_translate("MainWindow", "Trie:"))
 
-        #VERIFICA QUAL RÁDIO ESTÁ ATIVO
-        if self.listaRadio.isChecked() == True:
-            self.resultadoLabel.setText("Resultado Lista:")
-        else:
-            self.resultadoLabel.setText("Resultado Trie:")
 
 
     def btnstate(self, b):
 
         if b.objectName()  == "listaRadio":
             if b.isChecked() == True:
-                self.resultadoLabel.setText("Resultado Lista:")
                 self.arvoreRadio.setChecked(False)
 
         if b.objectName() == "arvoreRadio":
             if b.isChecked() == True:
-                self.resultadoLabel.setText("Resultado Trie:")
                 self.listaRadio.setChecked(False)
 

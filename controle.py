@@ -1,45 +1,8 @@
 from palavra import *
 from lista import Lista
 import sys
-from time import perf_counter
-import numpy
 from trie import *
 import datetime
-
-def trocar(v, i, j):
-    temp = v[i]
-    v[i] = v[j]
-    v[j] = temp
-
-def particao(v, esq, dir):
-    pivo = v[esq]; i = esq; j = dir+1
-    while(True):
-        i+=1
-        while v[i].peso < pivo.peso:
-            if i >= dir: break
-            i+=1
-        j-=1
-        while v[j].peso > pivo.peso:
-            if j <= esq: break
-            j-=1
-        if i >= j : break
-        trocar(v,i,j)
-    trocar(v,esq,j)
-    return j
-
-def qs (v, esq, dir):
-    if esq >= dir: return
-    p = particao(v,esq,dir)
-    qs(v,esq,p-1)
-    qs(v,p+1,dir)
-
-def quicksort(v, N):
-    qs(v, 0, N-1)
-def sortPesos(lista):
-    if lista == []: return []
-    else:
-        pivo = lista.pop()
-        return sortPesos([y for y in lista if y.peso > pivo.peso]) + [pivo] + sortPesos([x for x in lista if x.peso <= pivo.peso])
 
 class Controle:
     def __init__(self):
@@ -50,8 +13,8 @@ class Controle:
     def stop(self):
         self.__stop = datetime.datetime.now()
         return str(self.__stop - self.__start)
-    def find(self, prefixo, qtd): raise NotImplementedError("Selecione estrutura de dados")
-    def carregarDados(self, filename): raise NotImplementedError("Selecione estrutura de dados")
+    def find(self, prefixo, qtd): raise NotImplementedError("estrutura de dados nao selecionada")
+    def carregarDados(self, filename): raise NotImplementedError("estrutura de dados nao selecionada")
 
 class ImplementacaoLista(Controle):
     def __init__(self):
@@ -151,7 +114,6 @@ class ImplementacaoTrie(Controle):
             while linha[i] != '\t':
                 i += 1
             self.trie.inserir(Palavra(linha[i+1:len(linha)-1], int(linha[n:i])))
-
         file.close()
 
     def find(self, prefixo, qtd):
@@ -166,12 +128,12 @@ class ImplementacaoTrie(Controle):
                 atual = atual.rig
             else:
                 atual = atual.lef
-        sugestoes = getAll(self.trie, atual)
-        sugestoes = sortPesos(sugestoes)
+        sugestoes = getPrefix(self.trie, atual)
+        heapSort(sugestoes)
         string = ''
         for x in sugestoes:  
             if qtd == 0: break
-            if qtd == 1:
+            if qtd == 1 or x == sugestoes[len(sugestoes)-1]:
                 string =string + x.termo
             else:
                 string =string + x.termo + '\n'

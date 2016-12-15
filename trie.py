@@ -14,26 +14,6 @@ class Trie:
     def vazia(self):
         return self.raiz.chave == None
 
-    def find(self, termo):
-        k=0
-        atual = self.raiz
-        while k < len(termo):
-            if atual is None: return None
-            if k == len(termo) -1 and atual is None:
-                return None
-            elif k == len(termo) -1 and atual is not None:
-                return atual.valor
-            elif termo[k].lower() == atual.chave.lower():
-                atual = atual.mid
-                k += 1
-            elif termo[k].lower() > atual.chave.lower():
-                atual = atual.rig
-            else:
-                atual = atual.lef
-
-        if atual is None: return None
-        return atual.valor
-
     def inserir(self, palavra):
         k=0
         atual = self.raiz
@@ -77,11 +57,34 @@ class Trie:
                 atual = atual.lef
 
 
-def getAll(trie, no):
+def getPrefix(trie, no):
     if no is None: return []
     if no.valor is not None:
-        return getAll(trie, no.lef) + getAll(trie, no.mid) + getAll(trie, no.rig) + [no.valor]
+        return getPrefix(trie, no.lef) + getPrefix(trie, no.mid) + getPrefix(trie, no.rig) + [no.valor]
     if no.valor is None:
-        return getAll(trie, no.lef) + getAll(trie, no.mid) + getAll(trie, no.rig)
-    
-    
+        return getPrefix(trie, no.lef) + getPrefix(trie, no.mid) + getPrefix(trie, no.rig)
+
+def heapify(lista, n, i):
+    largest = i
+    left = (2 * i) + 1
+    right = (2 * i) + 2
+ 
+    if left < n and lista[i].peso > lista[left].peso:
+        largest = left
+ 
+    if right < n and lista[largest].peso > lista[right].peso:
+        largest = right
+ 
+    if largest != i:
+        lista[i],lista[largest] = lista[largest],lista[i]
+ 
+        heapify(lista, n, largest)
+ 
+def heapSort(lista):
+    n = len(lista)
+    for i in range(n, -1, -1):
+        heapify(lista, n, i)
+ 
+    for i in range(n-1, 0, -1):
+        lista[i], lista[0] = lista[0], lista[i]
+        heapify(lista, i, 0)
